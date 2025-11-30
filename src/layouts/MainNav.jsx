@@ -22,11 +22,13 @@ const MainNav = () => {
       <div className={`${isOpen ? "flex" : "hidden"} md:flex flex-col md:flex-row items-center gap-8 absolute md:static top-[72px] left-0 w-full md:w-auto bg-sec md:bg-transparent pb-8 md:pb-0 transition-all duration-300 ease-in-out`}>
         <nav className="flex flex-col md:flex-row text-white gap-8 items-center">
             <NavLink to='/' className='nav-t'> Home</NavLink>
+            <NavLink to='/profile-page' className='nav-t'> Profile</NavLink>
             <NavLink to='/About' className='nav-t'> About</NavLink>
             <NavLink to='/dashboard' className='nav-t'> Dashboard</NavLink>
             <NavLink to='/CVform' className='nav-t'> Review CV</NavLink>
             <NavLink to='/jop' className='nav-t'> Job Recommendations</NavLink>
             <NavLink to='/Chatbot' className='nav-t'> Chatbot</NavLink>
+
         </nav>
       </div>
 

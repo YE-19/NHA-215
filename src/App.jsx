@@ -14,6 +14,8 @@ import PublicRoute from "./proutes/PublicRoute";
 import Dashboard from "./pages/Dashboard";
 import Powerbi from "./pages/Powerbi";
 import Job from "./pages/Jop";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/Editprofile";
 function App() {
   return (
     <>
@@ -33,6 +35,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/powerbi" element={<ProtectedRoute> <Powerbi /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/jop" element={<ProtectedRoute> <Job /> </ProtectedRoute> } /> {/* in nav bar */}
+        <Route path="/profile-page" element={<ProtectedRoute> <Profile /> </ProtectedRoute> } /> {/* in nav bar */}
+        <Route path="/Edit-profile" element={<ProtectedRoute> <EditProfile /> </ProtectedRoute> } /> {/* in profile page */}
       </Routes>
       {/* end routes */}
     </>
