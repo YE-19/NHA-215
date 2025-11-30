@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase"; // تأكد من مسار firebase.js عندك
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import Loadingpage from "./Loadingpage";
 
 export default function EditProfile() {
     const navigate = useNavigate();
@@ -94,10 +95,10 @@ export default function EditProfile() {
         navigate("/profile-page");
     };
 
-    if (loading) return <div className="text-white text-center mt-10">Loading...</div>;
+    if (loading) return <Loadingpage />;
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4">
+        <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-md bg-[#121212] p-8 rounded-xl shadow-lg"

@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import Loadingpage from "./Loadingpage";
 
 export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [newSkill, setNewSkill] = useState("");
   const navigate = useNavigate();
 
-  // جلب بيانات المستخدم
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -47,7 +48,7 @@ export default function Profile() {
     setNewSkill("");
   };
 
-  // تسجيل الخروج مضبوط
+
   const handleLogout = async () => {
     try {
       await auth.signOut();
@@ -59,14 +60,12 @@ export default function Profile() {
 
   if (!userData) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#0a1111] text-white">
-        <p>Loading your profile...</p>
-      </div>
+        <Loadingpage />
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] flex flex-col items-center p-8 text-white">
+    <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
       <div className="w-full max-w-3xl bg-[#121212] p-8 rounded-2xl shadow-xl">
 
         {/* اسم المستخدم */}
@@ -74,17 +73,9 @@ export default function Profile() {
           <div className="w-32 h-32 rounded-full bg-[#1c1c1c] flex items-center justify-center text-4xl font-bold text-[#20bec4ff] shadow-lg border-2 border-[#20bec4ff] overflow-hidden">
             {userData.name[0].toUpperCase()}
           </div>
-
           <div className="flex-1 text-center sm:text-left">
             <h1 className="text-3xl font-bold text-[#20bec4ff]">{userData.name}</h1>
             <p className="text-gray-400 text-sm mt-1">{userData.email}</p>
-
-            <button
-              onClick={() => navigate("/Edit-profile")}
-              className="mt-4 text-sm text-[#20bec4ff] underline hover:text-[#60e9eeff]"
-            >
-              Edit Profile
-            </button>
           </div>
         </div>
 
@@ -136,10 +127,10 @@ export default function Profile() {
         {/* Logout */}
         <div className="mt-10 text-center">
           <button
-            onClick={handleLogout}
+            onClick={() => navigate("/Edit-profile")}
             className="px-6 py-2 rounded-md bg-[#20bec4ff] text-[#121212] font-semibold hover:bg-[#5ef3f7ff]"
           >
-            Log out
+              Edit Profile
           </button>
         </div>
 
