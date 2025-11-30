@@ -14,22 +14,6 @@ const About = () => {
     <Aboutcard text={"Market Trends Support and Analysis"} icon={"fa-regular fa-comments text-[70px] text-[#172627]"} />
     <Aboutcard text={"Interview Simulation Chatbot "} icon={"fa-solid fa-money-bill-trend-up text-[70px] text-[#172627]"} />
   </div>
-
-  <div className="flex gap-4 z-50 pb-8">
-    <button
-      onClick={() => navigate("/signin")}
-      className="btn-p"
-    >
-      Sign In
-    </button>
-    <button
-      onClick={() => navigate("/signup")}
-      className="btn-p"
-    >
-      Sign Up
-    </button>
-  </div>
-
 </section>
 
   )
