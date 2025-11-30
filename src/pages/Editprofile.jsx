@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db, storage } from "../firebase"; // تأكد من مسار firebase.js عندك
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db } from "../firebase"; // تأكد من مسار firebase.js عندك
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 export default function EditProfile() {
     const navigate = useNavigate();
@@ -12,12 +11,10 @@ export default function EditProfile() {
         email: "",
         skills: [],
         about: "",
-        photoURL: "",
     });
     const [skillInput, setSkillInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [allSkills, setAllSkills] = useState([]);
-    const [photoFile, setPhotoFile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -32,7 +29,6 @@ export default function EditProfile() {
                     email: auth.currentUser.email || "",
                     skills: data.skills || [],
                     about: data.about || "",
-                    photoURL: data.photoURL || "",
                 });
                 setAllSkills(data.allSkills || []);
             }
@@ -83,31 +79,15 @@ export default function EditProfile() {
         setSuggestions([]);
     };
 
-    const handlePhotoChange = (e) => {
-        if (e.target.files[0]) {
-            setPhotoFile(e.target.files[0]);
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!auth.currentUser) return;
-
-        let photoURL = formData.photoURL;
-
-        // لو المستخدم رفع صورة جديدة
-        if (photoFile) {
-            const photoRef = ref(storage, `users/${auth.currentUser.uid}/profile.jpg`);
-            await uploadBytes(photoRef, photoFile);
-            photoURL = await getDownloadURL(photoRef);
-        }
 
         const userRef = doc(db, "users", auth.currentUser.uid);
         await updateDoc(userRef, {
             name: formData.name,
             about: formData.about,
             skills: formData.skills,
-            photoURL: photoURL,
             allSkills: allSkills,
         });
 
@@ -159,17 +139,6 @@ export default function EditProfile() {
                         rows={3}
                         className="mt-1 block w-full rounded-md bg-[#1c1c1c] border border-gray-700 px-3 py-2 text-white focus:ring-2 focus:ring-[#0E898E]"
                         placeholder="Write something about yourself..."
-                    />
-                </label>
-
-                {/* Profile Photo */}
-                <label className="block mb-4">
-                    <span className="text-sm font-medium text-gray-300">Profile Photo</span>
-                    <input
-                        type="file"
-                        onChange={handlePhotoChange}
-                        className="mt-1 block w-full text-white"
-                        accept="image/*"
                     />
                 </label>
 
