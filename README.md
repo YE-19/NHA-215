@@ -157,5 +157,5 @@ Proudly built by the Frontend Development Team:
 ---
 
 <div align="center">
-  Built with ❤️ by the <b>Intelligent Career Advisor Team</b> - MIS Class of 2025
+  Built with ❤️ by the <b>Intelligent Career Advisor Team</b>
 </div>
