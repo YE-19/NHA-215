@@ -23,7 +23,8 @@ const MainNav = () => {
             <NavLink to='/' className='nav-t'> Home</NavLink>
             <NavLink to='/About' className='nav-t'> About</NavLink>
             <NavLink to='/profile-page' className='nav-t'> Profile</NavLink>
-            <NavLink to='/dashboard' className='nav-t'> Dashboard</NavLink>
+            <NavLink to='/jobviewer' className='nav-t'> Job viewer</NavLink>
+            <NavLink to='/dashboard' className='nav-t'> Job Trends</NavLink>
             <NavLink to='/CVform' className='nav-t'> Review CV</NavLink>
             <NavLink to='/jop' className='nav-t'> Job Recommendations</NavLink>
             <NavLink to='/Chatbot' className='nav-t'> Chatbot</NavLink>

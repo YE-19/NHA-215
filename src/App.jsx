@@ -16,6 +16,7 @@ import Powerbi from "./pages/Powerbi";
 import Job from "./pages/Jop";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/Editprofile";
+import Jobviewer from "./pages/Jobviewer";
 function App() {
   return (
     <>
@@ -32,6 +33,7 @@ function App() {
         <Route path="/logout" element={<ProtectedRoute> <Logout /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/chatbot" element={<ProtectedRoute> <Chatbot /> </ProtectedRoute>} /> {/* in nav bar */}
         <Route path="/CVform" element={<ProtectedRoute> <CVform /> </ProtectedRoute> } /> {/* in nav bar */}
+        <Route path="/jobviewer" element={<ProtectedRoute> <Jobviewer /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/powerbi" element={<ProtectedRoute> <Powerbi /> </ProtectedRoute> } /> {/* in nav bar */}
         <Route path="/jop" element={<ProtectedRoute> <Job /> </ProtectedRoute> } /> {/* in nav bar */}
