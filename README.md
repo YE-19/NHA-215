@@ -29,6 +29,7 @@ The application connects to a **Deployed Live Python AI Engine** to perform real
 - **Secure Authentication:** Robust Login/Sign-up system powered by **Firebase Auth**.
 - **Interactive Dashboard:** A centralized hub visualizing real-time market data and analytical history using **Nivo Charts**.
 - **Profile Customization:** Comprehensive settings to manage personal details and job preferences.
+- **Job Viewer & Tracker:** A fully interactive CRUD dashboard to manage your job application process. You can add job titles, company names, and update application statuses (Applied, Interviewing, Offer) with real-time Firestore synchronization.
 
 ### 🧠 AI-Powered Capabilities (Integrated)
 
@@ -127,6 +128,11 @@ Detailed feedback screen showing the **ATS Score**, formatting audits, and actio
 
 A robust and secure login/sign-up system powered by **Firebase Authentication**, ensuring safe user data management and seamless session handling.
 ![Authentication Screen](src/assets/singup.png)
+
+### 4. Job Application Tracker (Job Viewer)
+
+An interactive board designed to organize your job hunt. Users can easily **add, edit, and delete** job entries, tracking the company name, role, and current status of each application.
+![Job Viewer Interface](src/assets/Jobviewer.png)
 
 ## 🌐 Deployment
 
