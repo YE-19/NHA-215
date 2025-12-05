@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
+import navicon from "../assets/icon.png";
 
 const MainNav = () => {
 
@@ -10,7 +11,7 @@ const MainNav = () => {
 
   return (
     <div className="w-screen h-[72px] px-4 md:px-[50px] bg-sec flex justify-between items-center content-center relative z-50">
-      <p className='text-white text-[25px] font-bold cursor-pointer' onClick={() => navigate("/")}>ICA</p>
+    <img src={navicon} className='w-20 h-20 cursor-pointer' onClick={() => navigate("/")} alt="" />
       
       <div className="md:hidden text-white cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
