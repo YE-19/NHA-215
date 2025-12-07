@@ -156,7 +156,7 @@ Detailed feedback screen showing the **ATS Score**, formatting audits, and actio
 
 The project is optimized for deployment on modern cloud platforms.
 
-- **Frontend:** Ready for Vercel/Netlify.
+- **Frontend:** Live and accessible at [Intelligent Career Advisor](https://intelligentcareeradvisor.vercel.app/)
 - **Backend:** Already Deployed & Active.
 
 ## 🤝 Project Structure
