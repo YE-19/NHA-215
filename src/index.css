@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Added CSS rule to prevent horizontal scrolling */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   overflow-x: hidden;
 }

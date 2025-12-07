@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink, Route, Routes, Link } from "react-router-dom";
 import MainNav from "./layouts/MainNav";
-import About from "./pages/About";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
@@ -27,7 +26,6 @@ function App() {
       <Routes>
         <Route path="*" element={<Errorpage />} /> 
         <Route path="/" element={<Home />} /> {/* in nav bar */}
-        <Route path="/about" element={<About />} /> {/* in nav bar */}
         <Route path="/signin" element={<PublicRoute> <SignIn /> </PublicRoute>} /> {/* in About */}
         <Route path="/signup" element={<PublicRoute> <Signup /> </PublicRoute>} /> {/* in About */}
         <Route path="/logout" element={<ProtectedRoute> <Logout /> </ProtectedRoute> } /> {/* in nav bar */}

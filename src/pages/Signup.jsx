@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 
-// --- Initial state & reducer (same as before) ---
+
 const initialState = {
   values: { name: "", email: "", password: "", confirm: "" },
   errors: {},
@@ -118,7 +118,7 @@ export default function SignUpForm() {
 
   if (success) {
     return (
-<div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-6 animate-ultraSmoothFadeIn">
+<div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-6 animate-ultraSmoothFadeIn">
       <div className="max-w-md mx-auto p-6 bg-[#121212] rounded-lg shadow text-white">
         <h2 className="text-2xl font-semibold mb-4 text-green-400">Account created 🎉</h2>
         <p className="text-gray-300 flex items-center content-center gap-1">You're now logged in. Redirecting… 
@@ -135,7 +135,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
+    <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
       <form
         onSubmit={handleSubmit}
         noValidate
@@ -262,14 +262,14 @@ export default function SignUpForm() {
           )}
         </label>
 
-        {/* Terms */}
+       
         {/* <div className="text-xs text-gray-400 mb-6">
           By creating an account you agree to our{" "}
           <a href="/terms" className="text-[#20bec4ff] underline hover:text-green-300">Terms</a> and{" "}
           <a href="/privacy" className="text-[#20bec4ff] underline hover:text-green-300">Privacy Policy</a>.
         </div> */}
 
-        {/* Submit */}
+        
         <div className="flex items-center gap-3">
           <button
             type="submit"

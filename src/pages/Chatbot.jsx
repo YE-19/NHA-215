@@ -112,12 +112,11 @@ const Chatbot = () => {
     }
 
     return (
-        <section className='relative min-h-[calc(100vh-72px)] bg-pri p-4 md:p-16 flex items-center flex-col'>
+        <section className='relative min-h-[100vh] bg-pri p-4 md:p-16 flex items-center flex-col content-center'>
             {loadingP && (
                 <Loadingpage />
             )}
-            {/* Main Container: h-[85vh] for mobile to fit screen, fixed height for desktop */}
-            <div className='w-full h-[85vh] md:h-[625px] bg-[#0e1617] rounded-3xl p-4 md:p-6 gap-3 md:gap-5 flex flex-col relative'>
+            <div className='w-full h-[100vh] md:h-[625px] bg-[#0e1617] rounded-3xl p-4 md:p-6 gap-3 md:gap-5 flex flex-col relative my-auto'>
                 
                 {/* Header Section */}
                 <div className='mb-2 flex flex-col md:flex-row justify-between gap-3 md:gap-0'>

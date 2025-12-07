@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase"; // تأكد من مسار firebase.js عندك
+import { auth, db } from "../firebase"; 
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import Loadingpage from "./Loadingpage";
 
@@ -98,11 +98,11 @@ export default function EditProfile() {
     if (loading) return <Loadingpage />;
 
     return (
-        <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
-            <form
-                onSubmit={handleSubmit}
-                className="w-full max-w-md bg-[#121212] p-8 rounded-xl shadow-lg"
-            >
+  <div className="min-h-screen bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 pt-[100px] animate-ultraSmoothFadeIn flex justify-center items-center">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-md h-fit bg-[#121212] p-8 rounded-xl shadow-lg"
+    >
                 <h1 className="text-3xl font-bold text-[#20bec4ff] mb-4">
                     Edit Your Profile
                 </h1>

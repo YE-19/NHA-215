@@ -10,7 +10,6 @@ export default function Profile() {
   const [newSkill, setNewSkill] = useState("");
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -37,17 +36,17 @@ export default function Profile() {
     return () => unsubscribe();
   }, [navigate]);
 
-  // اضافة مهارة جديدة
   const handleAddSkill = async () => {
     const skill = newSkill.trim();
     if (!skill || (userData.skills || []).includes(skill)) return;
 
     const updatedSkills = [...(userData.skills || []), skill];
-    await updateDoc(doc(db, "users", auth.currentUser.uid), { skills: updatedSkills });
+    await updateDoc(doc(db, "users", auth.currentUser.uid), {
+      skills: updatedSkills,
+    });
     setUserData({ ...userData, skills: updatedSkills });
     setNewSkill("");
   };
-
 
   const handleLogout = async () => {
     try {
@@ -59,16 +58,14 @@ export default function Profile() {
   };
 
   if (!userData) {
-    return (
-        <Loadingpage />
-    );
+    return <Loadingpage />;
   }
 
   return (
-    <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
-      <div className="w-full max-w-3xl bg-[#121212] p-8 rounded-2xl shadow-xl">
+  <div className="min-h-screen bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 pt-[100px] animate-ultraSmoothFadeIn flex justify-center items-center">
+    <div className="w-full max-w-3xl bg-[#121212] p-8 rounded-2xl shadow-xl h-fit">
 
-        {/* اسم المستخدم */}
+        {/* User Info */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="w-32 h-32 rounded-full bg-[#1c1c1c] flex items-center justify-center text-4xl font-bold text-[#20bec4ff] shadow-lg border-2 border-[#20bec4ff] overflow-hidden">
             {userData.name[0].toUpperCase()}
@@ -81,15 +78,15 @@ export default function Profile() {
 
         <hr className="my-6 border-gray-700" />
 
-        {/* About */}
-        <div>
+        {/* About Section */}
+        <div className="h-fit w-full">
           <h2 className="text-xl font-semibold text-[#20bec4ff] mb-3">About</h2>
-          <p className="text-gray-300 leading-relaxed">
+          <p className="text-gray-300 leading-relaxed w-full break-words whitespace-pre-line">
             {userData.about || "No information added yet."}
           </p>
         </div>
 
-        {/* Skills */}
+        {/* Skills Section */}
         <div className="mt-8">
           <h2 className="text-xl font-semibold text-[#20bec4ff] mb-3">Skills</h2>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -124,13 +121,13 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Logout */}
+        {/* Buttons */}
         <div className="mt-10 text-center">
           <button
             onClick={() => navigate("/Edit-profile")}
             className="px-6 py-2 rounded-md bg-[#20bec4ff] text-[#121212] font-semibold hover:bg-[#5ef3f7ff]"
           >
-              Edit Profile
+            Edit Profile
           </button>
         </div>
 

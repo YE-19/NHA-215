@@ -7,7 +7,7 @@ const Powerbi = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full min-h-[calc(100vh-72px)]">
+    <div className="relative w-full min-h-screen pt-[100px]">
       {loading && <Loadingpage />}
 
       <iframe
@@ -22,7 +22,7 @@ const Powerbi = () => {
       {!loading && (
         <button
           onClick={() => navigate("/dashboard")}
-          className="absolute z-10 top-2 left-2 md:top-4 md:left-4 text-sm md:text-[16px] text-white bg-[#0e898e] p-2 md:p-3 rounded-[24px] hover:scale-110 transition-all ease-in duration-300"
+          className="absolute z-10 top-[110px] left-2 md:left-4 text-sm md:text-[16px] text-white bg-[#0e898e] p-2 md:p-3 rounded-[24px] hover:scale-110 transition-all ease-in duration-300"
         >
           Back
         </button>

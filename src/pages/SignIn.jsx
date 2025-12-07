@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; 
 
-// --- Initial state & reducer ---
+
 const initialState = {
   values: { email: "", password: "" },
   errors: {},
@@ -39,7 +39,7 @@ function reducer(state, action) {
   }
 }
 
-// --- Validators ---
+
 function validate(values) {
   const errs = {};
   if (!values.email) errs.email = "Email is required.";
@@ -81,7 +81,7 @@ export default function SignInForm() {
 
     dispatch({ type: "SET_LOADING", loading: true });
     try {
-      // Firebase Authentication
+      
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
       // Generate Token
@@ -106,7 +106,7 @@ export default function SignInForm() {
 
   if (success) {
     return (
-      <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
+      <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
       <div className="max-w-md mx-auto p-6 bg-[#121212] rounded-lg shadow text-white">
         <h2 className="text-2xl font-semibold mb-4 text-green-400">Welcome back👋</h2>
         <p className="text-gray-300 flex items-center content-center gap-1">You're now logged in. Redirecting… 
@@ -123,7 +123,7 @@ export default function SignInForm() {
   }
 
   return (
-  <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
+  <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn">
 
 
       <form

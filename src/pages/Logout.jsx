@@ -23,7 +23,7 @@ const Logout = () => {
 
     if (loading) {
       return (
-        <div className="min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-6 animate-ultraSmoothFadeIn">
+        <div className="min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-6 animate-ultraSmoothFadeIn">
         <div className="max-w-lg mx-auto p-6 bg-[#121212] rounded-lg shadow text-white ">
           <p className="text-lg font-semibold flex  gap-2 items-center content-center ">You're now logged out. Redirecting… 
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -37,7 +37,7 @@ const Logout = () => {
     }
 
     return (
-        <section className='min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn'>
+        <section className='min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-[#090f0fff] to-[#0c5c5fff] text-white p-4 animate-ultraSmoothFadeIn'>
             <div className="w-full max-w-md bg-[#121212] p-8 rounded-xl shadow-lg flex flex-col justify-center content-center items-center gap-5">
                 <h2 className='text-4xl'>To confirm logout</h2>
                 <p className='text-xl'>Some data may be lost after logging out</p>

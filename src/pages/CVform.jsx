@@ -3,6 +3,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Loadingpage from "./Loadingpage";
 
+
 const ACCEPTED_TYPES = [
   "application/pdf",
   "application/msword",
@@ -10,6 +11,7 @@ const ACCEPTED_TYPES = [
   "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   "application/vnd.ms-powerpoint",
 ];
+
 
 const initialState = {
   file: null,
@@ -47,6 +49,7 @@ function reducer(state, action) {
       return state;
   }
 }
+
 
 export default function CVFormUploader() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -116,15 +119,13 @@ export default function CVFormUploader() {
       console.log("API Response:", result);
 
       if (!response.ok)
-        throw new Error(
-          `API Error ${response.status}: ${JSON.stringify(result)}`
-        );
+        throw new Error(`API Error ${response.status}: ${JSON.stringify(result)}`);
 
       dispatch({ type: "SET_ANALYZING", analyzing: true });
 
       setTimeout(() => {
         dispatch({ type: "SET_ANALYSIS", data: result });
-      }, 1000);
+      }, 900);
     } catch (err) {
       dispatch({
         type: "SET_SERVER_ERROR",
@@ -134,6 +135,7 @@ export default function CVFormUploader() {
     }
   };
 
+
   if (analysis) {
     const {
       overall = 0,
@@ -142,95 +144,73 @@ export default function CVFormUploader() {
       missing_or_weak_sections = [],
       top_recommendations = [],
     } = analysis;
-    const scoreColor =
-      overall >= 80 ? "#10b981" : overall >= 60 ? "#f59e0b" : "#ef4444";
+    const scoreColor = overall >= 80 ? "#10b981" : overall >= 60 ? "#f59e0b" : "#ef4444";
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#010d0d] to-[#023437] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-[#010d0d] to-[#023437] flex items-center justify-center p-6 pt-[100px]">
         <div className="max-w-6xl w-full space-y-10">
-          <div className="bg-[#071014] rounded-3xl p-12 border border-[#123d3d] text-center">
-            <h3 className="text-5xl font-bold text-[#20bec4] mb-8">
-              ATS Overall Score
-            </h3>
-            <div className="w-80 h-80 mx-auto">
-              <CircularProgressbar
-                value={overall}
-                text={`${overall}%`}
-                styles={buildStyles({
-                  pathColor: scoreColor,
-                  textColor: "#fff",
-                  trailColor: "#1f2937",
-                  textSize: "18px",
-                })}
-              />
-            </div>
-          </div>
+          <div className="bg-gradient-to-b from-[#071014] to-[#081618] rounded-3xl p-12 border border-[#123d3d] text-center shadow-lg">
+            <h3 className="text-5xl font-bold text-[#20bec4] mb-8">ATS Overall Score</h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {Object.entries(subscores).map(([k, v]) => (
-              <div
-                key={k}
-                className="bg-[#0a1a1a] p-6 rounded-2xl text-center border border-[#123d3d]"
-              >
-                <p className="text-gray-400 capitalize">
-                  {k.replace(/_/g, " ")}
-                </p>
-                <p className="text-4xl font-bold text-white mt-2">{v}%</p>
+            <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
+              <div className="w-64 h-64 mx-auto">
+                <CircularProgressbar
+                  value={overall}
+                  text={`${overall}%`}
+                  styles={buildStyles({
+                    pathColor: scoreColor,
+                    textColor: "#fff",
+                    trailColor: "#0b1a1a",
+                    textSize: "16px",
+                  })}
+                />
               </div>
-            ))}
+
+              <div className="space-y-4 max-w-md text-left">
+                <h4 className="text-xl font-semibold text-white">Summary</h4>
+                <p className="text-gray-300">{analysis.summary || "No summary provided."}</p>
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                  {Object.entries(subscores).map(([k, v]) => (
+                    <div key={k} className="bg-[#0b1a1a] p-4 rounded-xl border border-[#123d3d]">
+                      <p className="text-gray-400 capitalize text-sm">{k.replace(/_/g, " ")}</p>
+                      <p className="text-white text-2xl font-bold mt-2">{v}%</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {warnings.length > 0 && (
             <div className="bg-[#071014] rounded-2xl p-8 border border-[#123d3d]">
-              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">
-                Warnings
-              </h3>
+              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">Warnings</h3>
               {warnings.map((w, i) => (
-                <p
-                  key={i}
-                  className="text-yellow-300 flex items-center gap-3 mt-2"
-                >
-                  Warning {w}
-                </p>
+                <p key={i} className="text-yellow-300 flex items-center gap-3 mt-2">• {w}</p>
               ))}
             </div>
           )}
 
           {missing_or_weak_sections.length > 0 && (
             <div className="bg-[#071014] rounded-2xl p-8 border border-[#123d3d]">
-              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">
-                Missing/Weak Sections
-              </h3>
+              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">Missing / Weak Sections</h3>
               {missing_or_weak_sections.map((s, i) => (
-                <p
-                  key={i}
-                  className="text-red-400 flex items-center gap-3 mt-2"
-                >
-                  Cross {s}
-                </p>
+                <p key={i} className="text-red-400 flex items-center gap-3 mt-2">• {s}</p>
               ))}
             </div>
           )}
 
           {top_recommendations.length > 0 && (
             <div className="bg-[#071014] rounded-2xl p-8 border border-[#123d3d]">
-              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">
-                Top Recommendations
-              </h3>
+              <h3 className="text-2xl font-bold text-[#20bec4] mb-5">Top Recommendations</h3>
               {top_recommendations.map((r, i) => (
-                <p
-                  key={i}
-                  className="text-green-400 flex items-center gap-3 mt-2"
-                >
-                  Check {r}
-                </p>
+                <p key={i} className="text-green-400 flex items-center gap-3 mt-2">• {r}</p>
               ))}
             </div>
           )}
 
           <button
             onClick={() => dispatch({ type: "SET_ANALYSIS", data: null })}
-            className="w-full py-6 bg-[#0ea6a9] hover:bg-[#0c8f90] text-white text-2xl font-bold rounded-2xl"
+            className="w-full py-5 bg-gradient-to-r from-[#20bec4] to-[#0ea6a9] hover:from-[#0ea6a9] text-black font-bold rounded-2xl"
           >
             Analyze Another CV
           </button>
@@ -240,73 +220,73 @@ export default function CVFormUploader() {
   }
 
   if (loading || analyzing) {
-    return (
-      <Loadingpage />
-    );
+    return <Loadingpage />;
   }
 
+  
   return (
-    <div className="min-h-[calc(100vh-72px)] flex items-center justify-center p-6 bg-gradient-to-br from-[#010d0d] to-[#023437]">
-      <div className="w-full max-w-4xl">
-        <div className="rounded-3xl bg-gradient-to-b from-[#bfeee9] to-[#c7f3ea] p-12 shadow-2xl border border-[#0c3c3a]">
-          <div className="text-center space-y-10">
-            <div>
-              <h2 className="text-5xl font-bold text-[#083433]">
-                Upload Your Resume
-              </h2>
-              <p className="text-xl text-[#083433]/90 mt-4">
-                Drag & drop your file here
-              </p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#010d0d] to-[#023437] flex items-center justify-center p-6 pt-[100px]">
+      <div className="w-full max-w-5xl">
+        <div className="rounded-3xl bg-[#010d0d]/80 p-10 shadow-2xl border border-[#0c3c3a]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Left: Upload card */}
+            <div className="bg-gradient-to-b from-[#071014] to-[#0b1b1b] rounded-2xl p-8 border border-[#123d3d] shadow-lg">
+              <h2 className="text-3xl font-bold text-[#20bec4] mb-4">Upload Your Resume</h2>
+              <p className="text-gray-300 mb-6">Drag & drop your file or click to choose. Accepted: PDF, DOCX, PPTX.</p>
 
-            <div
-              onDrop={onDrop}
-              onDragOver={onDragOver}
-              onDragLeave={onDragLeave}
-              className={`border-4 border-dashed rounded-3xl p-20 text-center transition-all ${
-                dragOver ? "border-[#0ea6a9] bg-teal-50" : "border-teal-400"
-              }`}
-            >
-              <input
-                ref={fileRef}
-                type="file"
-                accept=".pdf,.doc,.docx,.pptx,.ppt"
-                className="hidden"
-                onChange={onFileChange}
-              />
-              <button
-                onClick={onChoose}
-                className="px-12 py-5 bg-[#0ea6a9] hover:bg-[#0c8f90] text-white text-xl rounded-2xl font-semibold"
+              <div
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                onDragLeave={onDragLeave}
+                className={`rounded-xl p-8 text-center border-2 border-dashed transition ${dragOver ? 'border-[#20bec4] bg-white/5' : 'border-[#123d3d] bg-transparent'}`}
               >
-                Choose File
+                <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.pptx,.ppt" className="hidden" onChange={onFileChange} />
+                <button onClick={onChoose} className="px-8 py-3 bg-gradient-to-r from-[#20bec4] to-[#0ea6a9] rounded-lg text-black font-semibold hover:scale-105 transition">Choose file</button>
+                <p className="text-gray-400 mt-4">or drag & drop here</p>
+              </div>
+
+              {file && (
+                <div className="mt-4 flex items-center justify-between bg-white/5 p-3 rounded-md border border-[#123d3d]">
+                  <div>
+                    <div className="text-sm text-white font-medium">{file.name}</div>
+                    <div className="text-xs text-gray-300">{(file.size / 1024).toFixed(1)} KB</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button onClick={removeFile} className="text-red-400 hover:text-red-500">Remove</button>
+                  </div>
+                </div>
+              )}
+
+              {serverError && <p className="text-red-400 mt-3">{serverError}</p>}
+
+              <button
+                onClick={handleSubmit}
+                disabled={loading || !file}
+                className="mt-6 w-full py-4 rounded-xl text-black font-bold bg-gradient-to-r from-[#20bec4] to-[#0ea6a9] disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                Analyze My CV
               </button>
             </div>
 
-            {file && (
-              <div className="bg-white/40 backdrop-blur rounded-2xl p-6 flex justify-between items-center">
-                <span className="text-xl font-medium text-[#083433]">
-                  {file.name}
-                </span>
-                <button
-                  onClick={removeFile}
-                  className="text-red-600 font-bold text-lg"
-                >
-                  Remove
-                </button>
+            {/* Right: Info / placeholder */}
+            <div className="p-6 rounded-2xl bg-[#071014] border border-[#123d3d] shadow-inner text-white">
+              <h3 className="text-2xl font-semibold mb-3">What you'll get</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li>• ATS compatibility score</li>
+                <li>• Section-level feedback & warnings</li>
+                <li>• Skill & gap extraction</li>
+                <li>• Actionable recommendations</li>
+              </ul>
+
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold text-white/90">Quick tips</h4>
+                <ol className="mt-2 text-gray-400 list-decimal list-inside space-y-1">
+                  <li>Use clear section headers</li>
+                  <li>Keep formatting simple (PDF recommended)</li>
+                  <li>Include measurable results in experience</li>
+                </ol>
               </div>
-            )}
-
-            {serverError && (
-              <p className="text-red-500 font-bold text-xl">{serverError}</p>
-            )}
-
-            <button
-              onClick={handleSubmit}
-              disabled={loading || !file}
-              className="w-full py-7 text-3xl font-bold rounded-2xl text-black bg-[#20bec4] hover:bg-[#0ea6a9] disabled:bg-gray-500 disabled:cursor-not-allowed transition"
-            >
-              Analyze My CV
-            </button>
+            </div>
           </div>
         </div>
       </div>
