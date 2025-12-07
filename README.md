@@ -8,9 +8,12 @@
 ![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Firebase](https://img.shields.io/badge/Firebase-Hosted-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 
-## 🎥 Project Demo
+## 🎥 Project Demo & Live Access
 
-[![Watch the Demo](https://img.shields.io/badge/Watch-Project_Demo-red?style=for-the-badge&logo=youtube)](PUT_YOUR_VIDEO_LINK_HERE)
+> Watch the system in action or try it out yourself.
+
+[![Watch the Demo](https://img.shields.io/badge/Watch-Project_Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/ZUP_1845XFU?si=x8BUx1n9T4nYcxiN)
+[![Visit Website](https://img.shields.io/badge/Visit-Live_Website-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://intelligentcareeradvisor.vercel.app/)
 
 ---
 
