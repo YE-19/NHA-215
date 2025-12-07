@@ -30,12 +30,16 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-[calc(100vh-72px)] bg-pri p-4 md:p-16">
-      <div className="bg-[#0e1617] rounded-3xl p-4 md:p-6">
-        <h2 className="text-white text-[22px] md:text-[30px] pl-1 pb-3">
+<section className="relative min-h-[calc(100vh-72px)] bg-pri px-4 pb-4 pt-[80px] md:px-16 md:pb-16 md:pt-[100px] md:min-h-[1100px]">
+      <div className="bg-[#0e1617] rounded-3xl p-4 md:p-6 md:m-5 ">
+        <h2 className="text-white text-[22px] md:text-[30px] md:mt-3 pl-1 pb-3">
           |Key Labor Market Indicators
         </h2>
+        
+        {/* Progress Bars Section */}
         <div className="flex items-center bg-[#0A1010] content-center justify-center md:justify-evenly w-full rounded-3xl flex-wrap gap-4 py-6 md:py-0">
+          
+          {/* Item 1 */}
           <div className="w-[140px] sm:w-[200px] lg:w-[250px] p-2 md:p-4 flex flex-col content-center items-center gap-3">
             <CircularProgressbar
               value={values[0]}
@@ -51,6 +55,8 @@ const Dashboard = () => {
               Unemployment
             </span>
           </div>
+
+          {/* Item 2 */}
           <div className="w-[140px] sm:w-[200px] lg:w-[250px] p-2 md:p-4 flex flex-col content-center items-center gap-3">
             <CircularProgressbar
               value={values[1]}
@@ -66,6 +72,8 @@ const Dashboard = () => {
               Labor Force Participation
             </span>
           </div>
+
+          {/* Item 3 */}
           <div className="w-[140px] sm:w-[200px] lg:w-[250px] p-2 md:p-4 flex flex-col content-center items-center gap-3">
             <CircularProgressbar
               value={values[2]}
@@ -81,6 +89,8 @@ const Dashboard = () => {
               Employment
             </span>
           </div>
+
+          {/* Item 4 */}
           <div className="w-[140px] sm:w-[200px] lg:w-[250px] p-2 md:p-4 flex flex-col content-center items-center gap-3">
             <CircularProgressbar
               value={values[3]}
@@ -97,10 +107,13 @@ const Dashboard = () => {
             </span>
           </div>
         </div>
+
         <h2 className="text-white text-[22px] md:text-[30px] pl-1 py-3">
           |Economic Growth of Egypt
         </h2>
+        
         <EgyptGrowthChart />
+        
         <button
           onClick={() => navigate("/powerbi")}
           className="w-full md:w-auto text-[16px] md:text-[18px] text-white bg-[#0e898e] my-4 p-3 md:p-4 rounded-[24px] hover:scale-105 md:hover:scale-110 hover:bg-[#0e1617] hover:text-[#0e898e] transition-all ease-in duration-300"
