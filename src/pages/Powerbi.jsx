@@ -7,11 +7,11 @@ const Powerbi = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full min-h-screen pt-[100px]">
+<div className="relative w-full min-h-screen pt-[100px] flex flex-col justify-center items-center bg-gray-50">
       {loading && <Loadingpage />}
 
       <iframe
-        className="w-full min-h-[calc(100vh-72px)] block"
+        className="w-full md:w-full h-[80vh] md:h-[calc(100vh-72px)] md:pt-12 block shadow-lg"
         title="MarketTrendsDEPI"
         src="https://app.powerbi.com/view?r=eyJrIjoiMGMzNzY4YzctYzk2OS00M2I2LWI5NjAtNTRmNTU3NzU3NTczIiwidCI6IjIwODJkZTQ2LTFhZmEtNGI2NC1hNDQwLTY1NThmODBlOTg0MCIsImMiOjh9"
         frameBorder="0"
