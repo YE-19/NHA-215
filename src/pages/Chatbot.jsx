@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Loadingpage from './Loadingpage'
 
 const Chatbot = () => {
@@ -10,8 +10,18 @@ const Chatbot = () => {
     const [sources, setSources] = useState([])
     const [selectedSource, setSelectedSource] = useState(null)
 
+    // Scroll ref
+    const messagesEndRef = useRef(null)
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages, loading])
+
     setTimeout(() => {
-        setLoadingP(false)
+        loadingP && setLoadingP(false)
     }, 2000);
 
     useEffect(() => {
@@ -21,11 +31,11 @@ const Chatbot = () => {
                 if (!res.ok) throw new Error("Failed to fetch sources")
                 const data = await res.json()
                 setSources(data)
-                setMessages ((prev) => [...prev, { sender : "bot" , text :"Now choose a major" }])
+                setMessages((prev) => [...prev, { sender: "bot", text: "Now choose a major" }])
             } catch (err) {
                 console.log(err)
                 setMessages((prev) => [...prev, { sender: "bot", text: "Error fetching sources. Please try again later." }])
-            } 
+            }
         }
         fetchSources()
     }, [])
@@ -36,6 +46,7 @@ const Chatbot = () => {
     }
 
     const selectSource = async (sourceName) => {
+        setLoading(true)
         try {
             console.log(`Attempting to select source: ${sourceName}`);
             const res = await fetch("https://hema01-chatbot-simulation-interview.hf.space/api/select_source", {
@@ -47,7 +58,6 @@ const Chatbot = () => {
             if (res.ok) {
                 setSelectedSource(sourceName);
                 setMessages((prev) => [...prev, { sender: "bot", text: `Selected source: ${sourceName}, You can now generate a question.` }]);
-                console.log(`Source successfully selected: ${sourceName}, You can now generate a question.`);
             } else {
                 const errorData = await res.json();
                 console.error("Error selecting source:", errorData);
@@ -58,28 +68,29 @@ const Chatbot = () => {
             console.error("Error in selectSource function:", err);
             setMessages((prev) => [...prev, { sender: "bot", text: "Error selecting source. Please try again." }]);
             setLoading(false)
-        } 
+        }
     }
 
     const generateQuestion = async () => {
         if (!selectedSource) {
-            setMessages((prev) => [...prev, { sender:"bot", text:"Please select a source first." }])
+            setMessages((prev) => [...prev, { sender: "bot", text: "Please select a source first." }])
             return
         }
+        setLoading(true)
         try {
             const res = await fetch("https://hema01-chatbot-simulation-interview.hf.space/api/generate_question")
             const data = await res.json()
-            setMessages((prev) => [...prev, { sender:"bot", text:data.question || "No question generated." }])
+            setMessages((prev) => [...prev, { sender: "bot", text: data.question || "No question generated." }])
             setLoading(false)
         } catch (err) {
             console.log(err)
             setLoading(false)
-        } 
+        }
     }
 
     const submitAnswer = async () => {
         if (!input.trim()) return
-        const userMsg = { sender:'user', text:input }
+        const userMsg = { sender: 'user', text: input }
         setMessages((prev) => [...prev, userMsg])
         setinput("")
         setLoading(true)
@@ -90,19 +101,19 @@ const Chatbot = () => {
                 body: JSON.stringify({ answer: input })
             })
             const data = await res.json()
-            const botMsg = { 
-                sender:"bot", 
-                text: data.feedback ? `${data.feedback}\nScore: ${data.score}, Please clear the chat and start over.` : "No evaluation received." 
-            } 
+            const botMsg = {
+                sender: "bot",
+                text: data.feedback ? `${data.feedback}\nScore: ${data.score}, Please clear the chat and start over.` : "No evaluation received."
+            }
             setLoading(false)
             setMessages((prev) => [...prev, botMsg])
         } catch (err) {
             console.log(err)
-            setMessages((prev) => [...prev, { sender:"bot", text:"Error getting response. Try again." }])
+            setMessages((prev) => [...prev, { sender: "bot", text: "Error getting response. Try again." }])
             setLoading(false)
-        } 
+        }
     }
-    
+
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -112,72 +123,108 @@ const Chatbot = () => {
     }
 
     return (
-        <section className='relative min-h-[100vh] bg-pri px-4 pb-4 pt-[80px] md:px-16 md:pb-16 md:pt-[100px] flex items-center flex-col content-center'>
-      {loadingP && (
-        <Loadingpage />
-      )}
+        <section className='relative min-h-screen bg-gradient-to-br from-[#091818] to-[#092929] text-white flex items-center justify-center p-4 md:p-8 font-sans overflow-hidden'>
 
-      <div className='w-full h-[calc(100vh-100px)] md:h-[625px] bg-[#0e1617] rounded-3xl p-4 md:p-6 gap-3 md:gap-5 flex flex-col relative my-auto'>
-        
-        {/* Header Section */}
-        <div className='mb-2 flex flex-col md:flex-row justify-between gap-3 md:gap-0'>
-          <div className='flex gap-2 flex-wrap'> 
-          {sources.map((src, i) => (
-            <button key={i} onClick={() => {selectSource(src); setLoading(true)}} className={`px-3 py-1 text-sm md:text-base rounded ${selectedSource===src ? "bg-[#0e898e]" : "bg-gray-600"}`}>
-              {src}
-            </button>
-          ))}
-          </div>
-          <button onClick={generateQuestion} className='px-3 py-2 md:py-1 bg-green-600 rounded w-full md:w-auto text-sm md:text-base'>Generate Question</button>
-        </div>
+            <div className='w-full max-w-5xl h-[85vh] md:h-[700px] bg-white/5 backdrop-blur-xl border mt-12 border-white/10 rounded-3xl shadow-2xl flex flex-col relative z-10 overflow-hidden'>
 
-        {/* Chat Area: flex-1 allows it to fill remaining space instead of fixed height */}
-        <div className='w-full flex-1 border-solid border-white border-[2px] rounded-3xl p-3 md:p-5 overflow-auto'>
-          {messages.map((msg, index) => (
-            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
-              <div className={`p-3 rounded-lg max-w-[85%] break-words ${msg.sender === 'user' ? 'bg-sec text-white' : 'bg-gray-300 text-black'}`}>
-                {msg.text}
-              </div>
-            </div> 
-          ))}
-          { loading && 
-            <div className={`flex justify-start mb-2 mt-3 ml-1`}>
-              <div className={`w-2 h-2 rounded-full bg-gray-300 text-black animate-ping`}>
-              
-              </div>
-            </div> 
-          }
-        </div>
+                {/* --- Header Section --- */}
+                <div className='p-4 md:p-6 bg-white/5 border-b border-white/10 flex flex-col gap-4'>
+                    
+                    {/* Source Chips */}
+                    <div className='flex flex-wrap gap-2 items-center'>
+                        <span className="text-xs text-white/70 font-bold uppercase tracking-wider mr-2">Select Major:</span>
+                        {sources.map((src, i) => (
+                            <button
+                                key={i}
+                                onClick={() => { selectSource(src) }}
+                                disabled={loading}
+                                className={`px-4 py-1.5 text-sm rounded-xl transition-all duration-300 border font-medium ${
+                                    selectedSource === src
+                                        // Active State: واخد لون السيان المميز
+                                        ? "bg-[#20bec4]/20 border-[#20bec4] text-[#20bec4] shadow-[0_0_10px_rgba(32,190,196,0.2)]"
+                                        // Inactive State: واخد ستايل شفاف
+                                        : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white"
+                                }`}
+                            >
+                                {src}
+                            </button>
+                        ))}
+                    </div>
 
-        {/* Footer / Input Section */}
-        <div className='flex flex-col gap-2'>
-          <div className='flex items-center contain-content gap-2'>
-          <input
-          className='w-full h-[35px] md:h-[30px] p-2 rounded-3xl border-none focus:border-none text-black' 
-          type="text"
-          name='massage'
-          placeholder="Type your answer..."
-          value={input}
-          onChange={(e) => setinput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          />
-          </div>
-          <div className='flex gap-2'>
-          <button 
-          onClick={submitAnswer} 
-          className={`w-full h-[35px] md:h-[30px] text-[14px] md:text-[16px] text-white bg-[#0e898e] rounded-3xl hover:bg-[#172627] transition-all ease-in duration-300 ${!input.trim() ? 'opacity-50 cursor-not-allowed' : ''}`} 
-          disabled={!input.trim()}>
-            Send Answer
-          </button>
-            <button 
-            onClick={clearChat} 
-            className='w-full h-[35px] md:h-[30px] text-[14px] md:text-[16px] text-white bg-[#0e898e] rounded-3xl hover:bg-[#172627] transition-all ease-in duration-300' >
-            Clear
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+                    {/* Generate Button: نفس ستايل زرار Start Exploring */}
+                    <button
+                        onClick={generateQuestion}
+                        disabled={loading || !selectedSource}
+                        className={`w-full md:w-auto self-start px-6 py-2.5 bg-[#20bec4] hover:bg-[#169ba0] text-black font-bold rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                    >
+                        <span>Generate Question</span>
+                    </button>
+                </div>
+
+                {/* --- Chat Area --- */}
+                <div className='flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-black/10'>
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`
+                                max-w-[85%] md:max-w-[70%] p-4 rounded-2xl text-sm md:text-base leading-relaxed shadow-sm
+                                ${msg.sender === 'user'
+                                    // User Message: واخد لون السيان مع نص أسود لتباين عالي زي زرار الموقع
+                                    ? 'bg-[#20bec4] text-black font-medium rounded-tr-sm' 
+                                    // Bot Message: واخد ستايل شفاف غامق
+                                    : 'bg-white/10 text-white/90 border border-white/10 rounded-tl-sm'} 
+                            `}>
+                                <p className="whitespace-pre-wrap">{msg.text}</p>
+                            </div>
+                        </div>
+                    ))}
+
+                    {/* Loading Animation */}
+                    {loading &&
+                        <div className="flex justify-start w-full animate-pulse">
+                            <div className="bg-white/10 p-4 rounded-2xl rounded-tl-sm border border-white/10 flex gap-2 items-center">
+                                <div className="w-2 h-2 bg-[#20bec4] rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-[#20bec4] rounded-full animate-bounce delay-100"></div>
+                                <div className="w-2 h-2 bg-[#20bec4] rounded-full animate-bounce delay-200"></div>
+                            </div>
+                        </div>
+                    }
+                    <div ref={messagesEndRef} />
+                </div>
+
+                {/* --- Footer / Input Section --- */}
+                <div className='p-4 md:p-6 bg-white/5 border-t border-white/10 flex flex-col gap-3'>
+                    <div className='relative flex items-center gap-3'>
+                        <input
+                            className='w-full h-[50px] pl-5 pr-4 bg-black/20 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-[#20bec4] focus:ring-1 focus:ring-[#20bec4] transition-all'
+                            type="text"
+                            name='massage'
+                            placeholder="Type your answer..."
+                            value={input}
+                            onChange={(e) => setinput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                        />
+                    </div>
+                    
+                    <div className='flex gap-3 justify-end'>
+                         <button
+                            onClick={clearChat}
+                            className='px-6 py-2 h-[45px] text-sm font-medium text-white/60 hover:text-red-400 transition-colors rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10'
+                        >
+                            Clear Chat
+                        </button>
+
+                        <button
+                            onClick={submitAnswer}
+                            disabled={!input.trim()}
+                            // Send Button: نفس ستايل زرار Start Exploring
+                            className={`px-8 py-2 h-[45px] text-black font-bold bg-[#20bec4] hover:bg-[#169ba0] rounded-xl shadow-lg transition-all ease-in duration-200 ${!input.trim() ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            Send Answer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }
 
