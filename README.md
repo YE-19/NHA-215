@@ -174,7 +174,7 @@ Proudly built by the Frontend Development Team:
 | ------------------------- | -------------------------------- |
 | **Youssef Ehab Ali**      | Team Leader & Frontend Developer |
 | **Mohamed Ahmed Ramadan** | Frontend Developer               |
-| **Ziad Borai**            | Frontend Developer               |
+| **Ziad Boray**            | Frontend Developer               |
 | **Mohamed Nader**         | Frontend Developer               |
 | **Kermina Ehab**          | Frontend Developer               |
 
