@@ -3,15 +3,9 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Loadingpage from "./Loadingpage";
 
-
 const ACCEPTED_TYPES = [
   "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  "application/vnd.ms-powerpoint",
 ];
-
 
 const initialState = {
   file: null,
@@ -50,7 +44,6 @@ function reducer(state, action) {
   }
 }
 
-
 export default function CVFormUploader() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { file, loading, analyzing, serverError, analysis } = state;
@@ -59,15 +52,17 @@ export default function CVFormUploader() {
 
   const validateAndSet = useCallback((f) => {
     if (!f) return false;
-    if (!ACCEPTED_TYPES.includes(f.type)) {
+    
+    if (f.type !== "application/pdf") {
       dispatch({
         type: "SET_SERVER_ERROR",
-        error: "Only PDF, Word or PowerPoint files allowed.",
+        error: "Only PDF files are allowed.",
       });
       dispatch({ type: "REMOVE_FILE" });
       if (fileRef.current) fileRef.current.value = "";
       return false;
     }
+    
     dispatch({ type: "SET_FILE", file: f });
     return true;
   }, []);
@@ -97,7 +92,7 @@ export default function CVFormUploader() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
-      dispatch({ type: "SET_SERVER_ERROR", error: "Please upload a file." });
+      dispatch({ type: "SET_SERVER_ERROR", error: "Please upload a PDF file." });
       return;
     }
 
@@ -115,21 +110,41 @@ export default function CVFormUploader() {
         }
       );
 
+      if (!response.ok) {
+        let errorMsg = "Analysis failed. Please try again.";
+        
+        try {
+            const errorData = await response.json();
+            if (errorData.detail) errorMsg = errorData.detail;
+            else if (errorData.message) errorMsg = errorData.message;
+        } catch (e) {
+        }
+
+        if (response.status === 503) {
+            errorMsg = "Service is waking up. Please try again in a minute.";
+        } else if (response.status === 413) {
+            errorMsg = "File size is too large.";
+        } else if (response.status >= 500) {
+            errorMsg = "Server error. Please try again later.";
+        }
+
+        throw new Error(errorMsg);
+      }
+
       const result = await response.json();
       console.log("API Response:", result);
-
-      if (!response.ok)
-        throw new Error(`API Error ${response.status}: ${JSON.stringify(result)}`);
 
       dispatch({ type: "SET_ANALYZING", analyzing: true });
 
       setTimeout(() => {
         dispatch({ type: "SET_ANALYSIS", data: result });
       }, 900);
+
     } catch (err) {
+      console.error("Submission Error:", err);
       dispatch({
         type: "SET_SERVER_ERROR",
-        error: `Analysis failed: ${err.message}`,
+        error: err.message || "Network error. Check your connection.",
       });
       dispatch({ type: "SET_LOADING", loading: false });
     }
@@ -232,7 +247,7 @@ export default function CVFormUploader() {
             {/* Left: Upload card */}
             <div className="bg-gradient-to-b from-[#071014] to-[#0b1b1b] rounded-2xl p-8 border border-[#123d3d] shadow-lg">
               <h2 className="text-3xl font-bold text-[#20bec4] mb-4">Upload Your Resume</h2>
-              <p className="text-gray-300 mb-6">Drag & drop your file or click to choose. Accepted: PDF, DOCX, PPTX.</p>
+              <p className="text-gray-300 mb-6">Drag & drop your file or click to choose. Accepted: PDF only.</p>
 
               <div
                 onDrop={onDrop}
@@ -240,7 +255,8 @@ export default function CVFormUploader() {
                 onDragLeave={onDragLeave}
                 className={`rounded-xl p-8 text-center border-2 border-dashed transition ${dragOver ? 'border-[#20bec4] bg-white/5' : 'border-[#123d3d] bg-transparent'}`}
               >
-                <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.pptx,.ppt" className="hidden" onChange={onFileChange} />
+                {/* 4. تعديل الـ Input ليقبل PDF فقط */}
+                <input ref={fileRef} type="file" accept=".pdf,application/pdf" className="hidden" onChange={onFileChange} />
                 <button onClick={onChoose} className="px-8 py-3 bg-gradient-to-r from-[#20bec4] to-[#0ea6a9] rounded-lg text-black font-semibold hover:scale-105 transition">Choose file</button>
                 <p className="text-gray-400 mt-4">or drag & drop here</p>
               </div>
@@ -257,7 +273,12 @@ export default function CVFormUploader() {
                 </div>
               )}
 
-              {serverError && <p className="text-red-400 mt-3">{serverError}</p>}
+              {/* Server Error Message */}
+              {serverError && (
+                 <div className="mt-4 p-3 rounded bg-red-900/30 border border-red-800 text-red-300 text-sm">
+                   {serverError}
+                 </div>
+              )}
 
               <button
                 onClick={handleSubmit}
