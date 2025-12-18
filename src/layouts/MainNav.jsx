@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import navicon from "../assets/icon.png";
+import Cookies from "js-cookie";
 
 const MainNav = () => {
   const navigate = useNavigate();
@@ -52,9 +53,6 @@ const MainNav = () => {
         alt=""
       />
 
-      {/* زرار الموبايل (Hamburger) 
-        خليته يظهر هنا عشان الترتيب، بس الـ Position بتاعه Flex عادي 
-      */}
       <div
         className="md:hidden text-white cursor-pointer order-last ml-2"
         onClick={() => setIsOpen(!isOpen)}
@@ -114,8 +112,7 @@ const MainNav = () => {
         </nav>
       </div>
 
-      {/* الزراير: ظاهرة دايماً (شلت hidden) وظبطت الحجم للموبايل */}
-      {localStorage.getItem("userToken") ? (
+      {Cookies.get("userToken") ? (
         <button
           onClick={() => navigate("/logout")}
           className="

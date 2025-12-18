@@ -1,9 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 const PublicRoute = ({ children }) => {
 
-    const token = localStorage.getItem("userToken")
+    const token = Cookies.get("userToken");
     const navigate = useNavigate("")
 
     if (token) {

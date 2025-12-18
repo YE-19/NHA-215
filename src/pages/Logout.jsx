@@ -3,6 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import Loadingpage from './Loadingpage';
+import Cookies from 'js-cookie';
 
 const Logout = () => {
     const navigate = useNavigate();
@@ -11,9 +12,7 @@ const Logout = () => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            localStorage.removeItem("userToken");
-            localStorage.removeItem("userEmail");
-            localStorage.removeItem("userId");
+            Cookies.remove("userToken");
             setLoading(true);
             setTimeout(() => navigate("/signin"), 1500);
         } catch (error) {

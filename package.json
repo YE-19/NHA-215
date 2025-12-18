@@ -17,6 +17,7 @@
     "@nivo/pie": "^0.99.0",
     "@react-spring/web": "^10.0.3",
     "firebase": "^12.4.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.554.0",
     "react": "^19.1.1",
     "react-circular-progressbar": "^2.2.0",

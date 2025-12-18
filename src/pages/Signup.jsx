@@ -2,6 +2,7 @@ import React, { useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import Cookies from "js-cookie";
 
 const getFirebaseErrorMessage = (errorCode) => {
   switch (errorCode) {
@@ -118,10 +119,7 @@ export default function SignUpForm() {
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
       const token = await user.getIdToken();
-
-      localStorage.setItem("userToken", token);
-      localStorage.setItem("userEmail", user.email);
-    
+      Cookies.set("userToken", token, { expires: 7, secure: true, sameSite: 'strict' });
       dispatch({ type: "SET_SUCCESS" });
       setTimeout(() => navigate("/"), 1500);
       

@@ -2,7 +2,7 @@ import React, { useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-
+import Cookies from "js-cookie";
 
 const getFirebaseErrorMessage = (errorCode) => {
   switch (errorCode) {
@@ -104,7 +104,7 @@ export default function SignInForm() {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
       const token = await userCredential.user.getIdToken();
-      localStorage.setItem("userToken", token);
+      Cookies.set("userToken", token, { expires: 7, secure: true, sameSite: 'strict' });
 
       dispatch({ type: "SET_SUCCESS" });
       setTimeout(() => navigate("/"), 1500);

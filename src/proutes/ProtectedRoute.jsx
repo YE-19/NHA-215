@@ -1,11 +1,11 @@
 import React from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
-
+import Cookies from 'js-cookie';
 
 const ProtectedRoute = ({ children }) => {
     
     const navigate = useNavigate("");
-    const token = localStorage.getItem("userToken");
+    const token = Cookies.get("userToken");
 
     if (!token) {
         setTimeout(() => {
